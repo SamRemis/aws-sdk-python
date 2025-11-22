@@ -5,9 +5,9 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-project = "Amazon Transcribe Streaming Service"
+project = "Amazon SageMaker Runtime HTTP2"
 author = "Amazon Web Services"
-release = "0.2.0"
+release = "0.1.0"
 
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.viewcode"]
 
@@ -19,6 +19,6 @@ autodoc_default_options = {
 }
 
 html_theme = "pydata_sphinx_theme"
-html_theme_options = {"logo": {"text": "Amazon Transcribe Streaming Service"}}
+html_theme_options = {"logo": {"text": "Amazon SageMaker Runtime HTTP2"}}
 
 autodoc_typehints = "description"

@@ -6,7 +6,7 @@ from smithy_http.aio import HTTPResponse as _HTTPResponse
 from smithy_http.aio.interfaces import HTTPRequest, HTTPResponse
 from smithy_http.interfaces import HTTPClientConfiguration, HTTPRequestConfiguration
 
-from aws_sdk_transcribe_streaming.models import ServiceError
+from aws_sdk_sagemaker_runtime_http2.models import ServiceError
 
 
 class TestHttpServiceError(ServiceError):

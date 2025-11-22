@@ -24,48 +24,29 @@ from smithy_core.shapes import ShapeID
 from smithy_http.aio.crt import AWSCRTHTTPClient
 from smithy_http.interfaces import HTTPRequestConfiguration
 
-from ._private.schemas import TRANSCRIBE as _SCHEMA_TRANSCRIBE
+from ._private.schemas import (
+    AMAZON_SAGE_MAKER_RUNTIME_HTTP2 as _SCHEMA_AMAZON_SAGE_MAKER_RUNTIME_HTTP2,
+)
 from .auth import HTTPAuthSchemeResolver
 from .models import (
-    GetMedicalScribeStreamInput,
-    GetMedicalScribeStreamOutput,
-    StartCallAnalyticsStreamTranscriptionInput,
-    StartCallAnalyticsStreamTranscriptionOutput,
-    StartMedicalScribeStreamInput,
-    StartMedicalScribeStreamOutput,
-    StartMedicalStreamTranscriptionInput,
-    StartMedicalStreamTranscriptionOutput,
-    StartStreamTranscriptionInput,
-    StartStreamTranscriptionOutput,
+    InvokeEndpointWithBidirectionalStreamInput,
+    InvokeEndpointWithBidirectionalStreamOutput,
 )
 
 
 _ServiceInterceptor = Union[
-    Interceptor[GetMedicalScribeStreamInput, GetMedicalScribeStreamOutput, Any, Any],
     Interceptor[
-        StartCallAnalyticsStreamTranscriptionInput,
-        StartCallAnalyticsStreamTranscriptionOutput,
+        InvokeEndpointWithBidirectionalStreamInput,
+        InvokeEndpointWithBidirectionalStreamOutput,
         Any,
         Any,
-    ],
-    Interceptor[
-        StartMedicalScribeStreamInput, StartMedicalScribeStreamOutput, Any, Any
-    ],
-    Interceptor[
-        StartMedicalStreamTranscriptionInput,
-        StartMedicalStreamTranscriptionOutput,
-        Any,
-        Any,
-    ],
-    Interceptor[
-        StartStreamTranscriptionInput, StartStreamTranscriptionOutput, Any, Any
-    ],
+    ]
 ]
 
 
 @dataclass(init=False)
 class Config:
-    """Configuration for Transcribe Streaming."""
+    """Configuration for SageMaker Runtime HTTP2."""
 
     auth_scheme_resolver: HTTPAuthSchemeResolver
     auth_schemes: dict[ShapeID, AuthScheme[Any, Any, Any, Any]]
@@ -166,19 +147,21 @@ class Config:
         """
         self.auth_scheme_resolver = auth_scheme_resolver or HTTPAuthSchemeResolver()
         self.auth_schemes = auth_schemes or {
-            ShapeID("aws.auth#sigv4"): SigV4AuthScheme(service="transcribe")
+            ShapeID("aws.auth#sigv4"): SigV4AuthScheme(service="sagemaker")
         }
         self.aws_access_key_id = aws_access_key_id
         self.aws_credentials_identity_resolver = aws_credentials_identity_resolver
         self.aws_secret_access_key = aws_secret_access_key
         self.aws_session_token = aws_session_token
         self.endpoint_resolver = endpoint_resolver or _RegionalResolver(
-            endpoint_prefix="transcribestreaming"
+            endpoint_prefix="runtime.sagemaker"
         )
         self.endpoint_uri = endpoint_uri
         self.http_request_config = http_request_config
         self.interceptors = interceptors or []
-        self.protocol = protocol or RestJsonClientProtocol(_SCHEMA_TRANSCRIBE)
+        self.protocol = protocol or RestJsonClientProtocol(
+            _SCHEMA_AMAZON_SAGE_MAKER_RUNTIME_HTTP2
+        )
         self.region = region
         self.retry_strategy = retry_strategy
         self.sdk_ua_app_id = sdk_ua_app_id
